@@ -1,48 +1,49 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}Главная — конференция.рф{% endblock %}
+{% block title %}Главная — конференции.рф{% endblock %}
 
 {% block content %}
 {% include 'partials/slider.html' %}
 
-<section>
-
-    <h1>
+<section class="relative mb-12 overflow-hidden rounded-3xl border border-white/80 bg-white/70 p-8 text-center shadow-card backdrop-blur-sm sm:p-10">
+    <div class="pointer-events-none absolute -right-16 -top-16 h-48 w-48 rounded-full bg-brand-400/20 blur-3xl"></div>
+    <div class="pointer-events-none absolute -bottom-12 -left-12 h-40 w-40 rounded-full bg-indigo-400/15 blur-3xl"></div>
+    <h1 class="relative text-2xl font-bold tracking-tight text-brand-950 sm:text-4xl">
         Бронирование залов для всероссийских конференций
     </h1>
-    <p>
+    <p class="relative mx-auto mt-4 max-w-2xl text-sm leading-relaxed text-slate-600 sm:text-base">
         Портал конференция.рф — информационная система для подачи заявок на аренду конференц-залов.
         Зарегистрируйтесь, выберите помещение и укажите удобное время проведения мероприятия.
     </p>
     {% if user.is_authenticated %}
-    <div>
-        <a href="{% url 'halls' %}">Смотреть залы и календарь</a>
-        <a href="{% url 'booking_create' %}">Оформить заявку</a>
+    <div class="relative mt-8 flex flex-col justify-center gap-3 sm:flex-row">
+        <a href="{% url 'halls' %}" class="inline-flex items-center justify-center rounded-xl bg-gradient-to-r from-brand-600 to-brand-700 px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-brand-500/30 transition hover:from-brand-700 hover:to-brand-800">Смотреть залы и календарь</a>
+        <a href="{% url 'booking_create' %}" class="inline-flex items-center justify-center rounded-xl border border-brand-200 bg-white px-6 py-3 text-sm font-semibold text-brand-700 shadow-sm transition hover:bg-brand-50">Оформить заявку</a>
     </div>
     {% else %}
-    <div>
-        <button type="button" data-open-modal="register" >Зарегистрироваться</button>
-        <button type="button" data-open-modal="login">Войти</button>
+    <div class="relative mt-8 flex flex-col justify-center gap-3 sm:flex-row">
+        <button type="button" data-open-modal="register" class="inline-flex items-center justify-center rounded-xl bg-gradient-to-r from-brand-600 to-brand-700 px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-brand-500/30 transition hover:from-brand-700 hover:to-brand-800">Зарегистрироваться</button>
+        <button type="button" data-open-modal="login" class="inline-flex items-center justify-center rounded-xl border border-brand-200 bg-white px-6 py-3 text-sm font-semibold text-brand-700 shadow-sm transition hover:bg-brand-50">Войти</button>
     </div>
     {% endif %}
 </section>
 
-<section>
-    <article>
-        <span>01</span>
-        <h3>Выбор зала</h3>
-        <p>Просматривайте доступные помещения и свободные даты в интерактивном календаре.</p>
+<section class="grid grid-cols-1 gap-5 sm:grid-cols-3">
+    <article class="group rounded-2xl border border-white/80 bg-white/80 p-6 shadow-card backdrop-blur-sm transition hover:-translate-y-0.5 hover:shadow-soft">
+        <span class="mb-3 inline-block rounded-lg bg-brand-100 px-2.5 py-1 text-xs font-bold uppercase tracking-wide text-brand-700">01</span>
+        <h3 class="mb-2 text-lg font-semibold text-brand-900">Выбор зала</h3>
+        <p class="text-sm leading-relaxed text-slate-600">Просматривайте доступные помещения и свободные даты в интерактивном календаре.</p>
     </article>
-    <article>
-        <span>02</span>
-        <h3>Онлайн-заявка</h3>
-        <p>Укажите дату в формате дд.мм.гггг и способ оплаты: наличные или перевод.</p>
+    <article class="group rounded-2xl border border-white/80 bg-white/80 p-6 shadow-card backdrop-blur-sm transition hover:-translate-y-0.5 hover:shadow-soft">
+        <span class="mb-3 inline-block rounded-lg bg-indigo-100 px-2.5 py-1 text-xs font-bold uppercase tracking-wide text-indigo-700">02</span>
+        <h3 class="mb-2 text-lg font-semibold text-brand-900">Онлайн-заявка</h3>
+        <p class="text-sm leading-relaxed text-slate-600">Укажите дату в формате дд.мм.гггг и способ оплаты: наличные или перевод.</p>
     </article>
-    <article>
-        <span>03</span>
-        <h3>Личный кабинет</h3>
-        <p>Отслеживайте статус заявок и оставляйте отзывы после завершения мероприятия.</p>
+    <article class="group rounded-2xl border border-white/80 bg-white/80 p-6 shadow-card backdrop-blur-sm transition hover:-translate-y-0.5 hover:shadow-soft">
+        <span class="mb-3 inline-block rounded-lg bg-emerald-100 px-2.5 py-1 text-xs font-bold uppercase tracking-wide text-emerald-700">03</span>
+        <h3 class="mb-2 text-lg font-semibold text-brand-900">Личный кабинет</h3>
+        <p class="text-sm leading-relaxed text-slate-600">Отслеживайте статус заявок и оставляйте отзывы после завершения мероприятия.</p>
     </article>
 </section>
 {% endblock %}

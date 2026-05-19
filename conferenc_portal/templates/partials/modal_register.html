@@ -1,10 +1,28 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-
-</body>
-</html>
+<div id="modal-register" class="modal-overlay hidden" role="dialog" aria-modal="true">
+    <div class="modal-backdrop" data-close-modal></div>
+    <section class="modal-box modal-box-wide rounded-2xl border border-white/20 bg-white p-6 shadow-2xl sm:p-8">
+        <h2 class="mb-1 text-xl font-bold text-brand-900">Регистрация</h2>
+        <p class="mb-5 text-sm text-slate-500">Заполните все поля для создания аккаунта</p>
+        <form method="post" action="{% url 'home' %}" novalidate>
+            {% csrf_token %}
+            <input type="hidden" name="action" value="register">
+            <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                {% for field in register_form %}
+                <div class="{% if field.name == 'phone' or field.name == 'email' %}sm:col-span-2{% endif %}">
+                    <label class="mb-1.5 block text-sm font-medium text-slate-700" for="{{ field.id_for_label }}">{{ field.label }}</label>
+                    {{ field }}
+                    {% if field.errors %}
+                    <p class="mt-1 text-xs font-medium text-red-600">{% for e in field.errors %}{{ e }}{% endfor %}</p>
+                    {% endif %}
+                </div>
+                {% endfor %}
+            </div>
+            <button type="submit" class="mt-5 w-full rounded-xl bg-gradient-to-r from-brand-600 to-brand-700 py-3 text-sm font-semibold text-white shadow-md shadow-brand-500/25 transition hover:from-brand-700 hover:to-brand-800">Зарегистрироваться</button>
+        </form>
+        <p class="mt-5 text-center text-sm text-slate-600">
+            Уже есть аккаунт?
+            <button type="button" data-switch-modal="login" class="font-semibold text-brand-600 hover:text-brand-700 hover:underline">Вернуться ко входу</button>
+        </p>
+        <button type="button" data-close-modal class="modal-close-btn mt-4 w-full rounded-xl border border-slate-200 bg-slate-50 py-2.5 text-sm font-medium text-slate-600 transition hover:bg-slate-100">Закрыть</button>
+    </section>
+</div>

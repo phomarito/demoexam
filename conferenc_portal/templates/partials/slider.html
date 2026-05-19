@@ -1,10 +1,55 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% load static %}
+<section class="slider-section mb-8" aria-label="Слайдер конференц-залов">
+    <div class="slider-container rounded-2xl shadow-xl ring-1 ring-slate-200/60" data-slider>
+        <div class="slider-viewport">
+            <div class="slider-track">
+                <article class="slider-slide">
+                    <img src="{% static 'images/slide1.svg' %}" alt="Конференц-зал Север" width="800" height="450" decoding="async">
+                    <div class="slider-overlay"></div>
+                    <div class="slider-caption">
+                        <span class="slider-tag">Зал «Север»</span>
+                        <span class="slider-title">До 300 участников</span>
+                    </div>
+                </article>
+                <article class="slider-slide">
+                    <img src="{% static 'images/slide2.svg' %}" alt="Зал Волга" width="800" height="450" decoding="async">
+                    <div class="slider-overlay"></div>
+                    <div class="slider-caption">
+                        <span class="slider-tag">Зал «Волга»</span>
+                        <span class="slider-title">Современное оборудование</span>
+                    </div>
+                </article>
+                <article class="slider-slide">
+                    <img src="{% static 'images/slide3.svg' %}" alt="Зал Байкал" width="800" height="450" decoding="async">
+                    <div class="slider-overlay"></div>
+                    <div class="slider-caption">
+                        <span class="slider-tag">Зал «Байкал»</span>
+                        <span class="slider-title">Камерные форумы</span>
+                    </div>
+                </article>
+                <article class="slider-slide">
+                    <img src="{% static 'images/slide4.svg' %}" alt="Зал Кавказ" width="800" height="450" decoding="async">
+                    <div class="slider-overlay"></div>
+                    <div class="slider-caption">
+                        <span class="slider-tag">Зал «Кавказ»</span>
+                        <span class="slider-title">Многофункциональный формат</span>
+                    </div>
+                </article>
+            </div>
+        </div>
 
-</body>
-</html>
+        <div class="slider-controls">
+            <button type="button" class="slider-btn slider-btn-prev" aria-label="Предыдущий слайд">Назад</button>
+            <button type="button" class="slider-btn slider-btn-next" aria-label="Следующий слайд">Вперёд</button>
+        </div>
+
+        <div class="slider-footer">
+            <div class="slider-dots" role="tablist" aria-label="Выбор слайда"></div>
+            <span class="slider-counter" aria-live="polite">1 / 4</span>
+        </div>
+
+        <div class="slider-progress" aria-hidden="true">
+            <span class="slider-progress-bar"></span>
+        </div>
+    </div>
+</section>
