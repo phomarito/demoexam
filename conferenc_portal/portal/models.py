@@ -1,6 +1,8 @@
 from django.conf import settings
 from django.db import models
 
+# здесь описаны все нужные модели
+
 
 class UserProfile(models.Model):
     user = models.OneToOneField(

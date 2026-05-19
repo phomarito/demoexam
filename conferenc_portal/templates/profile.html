@@ -34,6 +34,8 @@
             <p class="text-sm"><span class="text-slate-500">Создана:</span> <span class="font-medium text-slate-800">{{ booking.created_at|date:"d.m.Y H:i" }}</span></p>
         </div>
 
+<!--        отзыв можно написать только после завершения брони админом -->
+
         {% if booking.review %}
         <div class="mx-5 mb-5 rounded-xl border border-emerald-100 bg-emerald-50/80 p-4 text-sm">
             <p class="mb-1 font-semibold text-emerald-800">Ваш отзыв — оценка {{ booking.review.rating }}</p>

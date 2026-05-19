@@ -14,10 +14,10 @@
                         brand: {
                             50: '#eff6ff',
                             100: '#dbeafe',
-                            200: '#bfdbfe',
-                            400: '#60a5fa',
-                            500: '#3b82f6',
-                            600: '#31A999',
+                            200: '#28A745',
+                            400: '#28A745',
+                            500: '#28A745',
+                            600: '#28A745',
                             700: '#28A745',
                             800: '#28A745',
                             900: '#28A745',
@@ -82,12 +82,6 @@
         {% block content %}{% endblock %}
     </main>
 
-    <footer class="mt-auto border-t border-slate-200/80 bg-white/60 backdrop-blur-sm">
-        <div class="mx-auto max-w-6xl px-4 py-6 text-center sm:px-6">
-            <p class="text-sm font-medium text-brand-900">конференции.рф</p>
-            <p class="mt-1 text-xs text-slate-500">ИС бронирования помещений для всероссийских конференций &copy; 2026</p>
-        </div>
-    </footer>
 
     {% if not user.is_authenticated %}
     {% include 'partials/modal_login.html' %}

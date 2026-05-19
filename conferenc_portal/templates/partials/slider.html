@@ -1,35 +1,48 @@
+<!-- Слайдер реализован на JavaScript -->
 {% load static %}
 <section class="slider-section mb-8" aria-label="Слайдер конференц-залов">
     <div class="slider-container rounded-2xl shadow-xl ring-1 ring-slate-200/60" data-slider>
         <div class="slider-viewport">
             <div class="slider-track">
                 <article class="slider-slide">
-                    <img src="{% static 'images/slide1.svg' %}" alt="Конференц-зал Север" width="800" height="450" decoding="async">
+                    <img src="{% static 'images/slide3.jpg' %}" alt="Конференц-зал Север" width="1920" height="450" decoding="async">
                     <div class="slider-overlay"></div>
+                    <div class="slider-circle-1"></div>
+                    <div class="slider-circle-2"></div>
+                    <div class="slider-line"></div>
                     <div class="slider-caption">
                         <span class="slider-tag">Зал «Север»</span>
                         <span class="slider-title">До 300 участников</span>
                     </div>
                 </article>
                 <article class="slider-slide">
-                    <img src="{% static 'images/slide2.svg' %}" alt="Зал Волга" width="800" height="450" decoding="async">
+                    <img src="{% static 'images/slide2.jpg' %}" alt="Зал Волга" width="1920" height="450" decoding="async">
                     <div class="slider-overlay"></div>
+                    <div class="slider-circle-1"></div>
+                    <div class="slider-circle-2"></div>
+                    <div class="slider-line"></div>
                     <div class="slider-caption">
                         <span class="slider-tag">Зал «Волга»</span>
                         <span class="slider-title">Современное оборудование</span>
                     </div>
                 </article>
                 <article class="slider-slide">
-                    <img src="{% static 'images/slide3.svg' %}" alt="Зал Байкал" width="800" height="450" decoding="async">
+                    <img src="{% static 'images/slide1.jpg' %}" alt="Зал Байкал" width="1920" height="450" decoding="async">
                     <div class="slider-overlay"></div>
+                    <div class="slider-circle-1"></div>
+                    <div class="slider-circle-2"></div>
+                    <div class="slider-line"></div>
                     <div class="slider-caption">
                         <span class="slider-tag">Зал «Байкал»</span>
                         <span class="slider-title">Камерные форумы</span>
                     </div>
                 </article>
                 <article class="slider-slide">
-                    <img src="{% static 'images/slide4.svg' %}" alt="Зал Кавказ" width="800" height="450" decoding="async">
+                    <img src="{% static 'images/slide4.jpg' %}" alt="Зал Кавказ" width="1920" height="450" decoding="async">
                     <div class="slider-overlay"></div>
+                    <div class="slider-circle-1"></div>
+                    <div class="slider-circle-2"></div>
+                    <div class="slider-line"></div>
                     <div class="slider-caption">
                         <span class="slider-tag">Зал «Кавказ»</span>
                         <span class="slider-title">Многофункциональный формат</span>
@@ -53,3 +66,211 @@
         </div>
     </div>
 </section>
+
+<style>
+    /* Секция на всю ширину */
+    .slider-section {
+        width: 100%;
+    }
+
+    /* Контейнер слайдера на всю ширину */
+    .slider-container {
+        position: relative;
+        width: 100%;
+        max-width: none; /* убираем ограничение */
+        margin: 0;
+        border-radius: 0; /* убираем скругление, если нужно на всю ширину */
+        overflow: hidden;
+        background: #0f2744;
+    }
+
+    /* Если нужно сохранить скругление по краям */
+    .slider-container.rounded-2xl {
+        border-radius: 1rem;
+    }
+
+    .slider-viewport {
+        overflow: hidden;
+        width: 100%;
+    }
+
+    .slider-track {
+        display: flex;
+        transition: transform 0.5s ease;
+        width: 100%;
+    }
+
+    .slider-slide {
+        flex-shrink: 0;
+        width: 100%;
+        position: relative;
+        height: 450px;
+    }
+
+    .slider-slide img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+    }
+
+    /* Затемнение поверх картинки */
+    .slider-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.4);
+        z-index: 1;
+    }
+
+    /* Декоративные круги */
+    .slider-circle-1 {
+        position: absolute;
+        top: 80px;
+        right: -40px;
+        width: 200px;
+        height: 200px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.1);
+        z-index: 2;
+        pointer-events: none;
+    }
+
+    .slider-circle-2 {
+        position: absolute;
+        bottom: 20px;
+        left: -30px;
+        width: 150px;
+        height: 150px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.08);
+        z-index: 2;
+        pointer-events: none;
+    }
+
+    /* Линия */
+    .slider-line {
+        position: absolute;
+        bottom: 80px;
+        left: 60px;
+        right: 60px;
+        height: 2px;
+        background: rgba(255, 255, 255, 0.2);
+        border-radius: 1px;
+        z-index: 2;
+    }
+
+    /* Текст */
+    .slider-caption {
+        position: absolute;
+        bottom: 120px;
+        left: 0;
+        right: 0;
+        text-align: center;
+        z-index: 3;
+        color: white;
+    }
+
+    .slider-tag {
+        display: block;
+        font-size: 34px;
+        font-weight: 700;
+        margin-bottom: 10px;
+    }
+
+    .slider-title {
+        font-size: 18px;
+        opacity: 0.9;
+    }
+
+    /* Кнопки управления */
+    .slider-controls {
+        position: absolute;
+        top: 50%;
+        left: 0;
+        right: 0;
+        transform: translateY(-50%);
+        display: flex;
+        justify-content: space-between;
+        padding: 0 16px;
+        z-index: 10;
+        pointer-events: none;
+    }
+
+    .slider-btn {
+        pointer-events: auto;
+        background: rgba(255, 255, 255, 0.2);
+        border: none;
+        color: white;
+        padding: 8px 16px;
+        border-radius: 999px;
+        cursor: pointer;
+        backdrop-filter: blur(4px);
+        font-size: 14px;
+        transition: background 0.3s;
+    }
+
+    .slider-btn:hover {
+        background: rgba(255, 255, 255, 0.4);
+    }
+
+    /* Футер с точками и счётчиком */
+    .slider-footer {
+        position: absolute;
+        bottom: 16px;
+        left: 0;
+        right: 0;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0 24px;
+        z-index: 10;
+    }
+
+    .slider-dots {
+        display: flex;
+        gap: 8px;
+    }
+
+    .slider-dot {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.4);
+        border: none;
+        cursor: pointer;
+        padding: 0;
+        transition: all 0.3s;
+    }
+
+    .slider-dot.active {
+        background: white;
+        width: 24px;
+        border-radius: 5px;
+    }
+
+    .slider-counter {
+        color: rgba(255, 255, 255, 0.7);
+        font-size: 14px;
+    }
+
+    /* Прогресс-бар */
+    .slider-progress {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        height: 3px;
+        background: rgba(255, 255, 255, 0.3);
+        width: 100%;
+        z-index: 10;
+    }
+
+    .slider-progress-bar {
+        display: block;
+        height: 100%;
+        width: 0%;
+        background: white;
+    }
+</style>

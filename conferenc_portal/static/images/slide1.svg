@@ -1,20 +1,19 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="800" height="450" viewBox="0 0 800 450">
   <defs>
-    <linearGradient id="bg1" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#0f2744"/>
-      <stop offset="100%" stop-color="#1e4a8a"/>
-    </linearGradient>
     <linearGradient id="shine1" x1="0%" y1="0%" x2="0%" y2="100%">
       <stop offset="0%" stop-color="rgba(255,255,255,0.12)"/>
       <stop offset="100%" stop-color="rgba(255,255,255,0)"/>
     </linearGradient>
   </defs>
-  <rect width="800" height="450" fill="url(#bg1)"/>
-  <rect width="800" height="450" fill="url(#shine1)"/>
-  <circle cx="680" cy="80" r="120" fill="rgba(255,255,255,0.06)"/>
-  <circle cx="120" cy="380" r="90" fill="rgba(255,255,255,0.05)"/>
-  <rect x="60" y="320" width="680" height="2" fill="rgba(255,255,255,0.15)" rx="1"/>
+
+  <image href="slide1.jpg" x="0" y="0" width="800" height="450" preserveAspectRatio="xMidYMid slice"/>
+
+  <!-- Полупрозрачное затемнение для читаемости текста -->
+  <rect width="800" height="450" fill="rgba(0,0,0,0.35)"/>
+  <circle cx="680" cy="80" r="120" fill="rgba(255,255,255,0.12)"/>
+  <circle cx="120" cy="380" r="90" fill="rgba(255,255,255,0.08)"/>
+  <rect x="60" y="320" width="680" height="2" fill="rgba(255,255,255,0.2)" rx="1"/>
   <text x="400" y="195" text-anchor="middle" fill="white" font-family="Segoe UI,system-ui,sans-serif" font-size="34" font-weight="700">Конференц-зал «Север»</text>
-  <text x="400" y="240" text-anchor="middle" fill="rgba(255,255,255,0.8)" font-family="Segoe UI,system-ui,sans-serif" font-size="18">Всероссийские конференции</text>
-  <text x="400" y="395" text-anchor="middle" fill="rgba(255,255,255,0.55)" font-family="Segoe UI,system-ui,sans-serif" font-size="14" letter-spacing="2">КОНФЕРЕНЦИЯ.РФ</text>
+  <text x="400" y="240" text-anchor="middle" fill="rgba(255,255,255,0.9)" font-family="Segoe UI,system-ui,sans-serif" font-size="18">Всероссийские конференции</text>
+  <text x="400" y="395" text-anchor="middle" fill="rgba(255,255,255,0.6)" font-family="Segoe UI,system-ui,sans-serif" font-size="14" letter-spacing="2">КОНФЕРЕНЦИЯ.РФ</text>
 </svg>

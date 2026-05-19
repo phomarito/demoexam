@@ -1,5 +1,7 @@
 from django.urls import path
 
+# здесь описана маршрутизация
+
 from . import views
 
 urlpatterns = [
