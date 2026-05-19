@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+{% block title %}Оформление заявки — конференция.рф{% endblock %}
+
+{% block content %}
+<header class="mb-8 text-center">
+    <h1 class="text-2xl font-bold tracking-tight text-brand-950 sm:text-3xl">Оформление заявки</h1>
+    <p class="mt-2 text-sm text-slate-600">Выберите зал, дату и способ оплаты</p>
+</header>
+
+<article class="mx-auto max-w-lg overflow-hidden rounded-2xl border border-white/80 bg-white/90 shadow-card backdrop-blur-sm">
+    <div class="h-1.5 bg-gradient-to-r from-brand-500 via-brand-600 to-indigo-600"></div>
+    <form method="post" novalidate class="space-y-5 p-6 sm:p-8">
+        {% csrf_token %}
+        {% if form.non_field_errors %}
+        <aside class="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-800">
+            {% for error in form.non_field_errors %}
+            <p>{{ error }}</p>
+            {% endfor %}
+        </aside>
+        {% endif %}
+
+        <div>
+            <label class="mb-1.5 block text-sm font-medium text-slate-700" for="{{ form.room.id_for_label }}">{{ form.room.label }}</label>
+            {{ form.room }}
+            {% if form.room.errors %}<p class="mt-1 text-xs font-medium text-red-600">{{ form.room.errors.0 }}</p>{% endif %}
+        </div>
+
+        <div class="grid grid-cols-1 gap-5 sm:grid-cols-2">
+            <div>
+                <label class="mb-1.5 block text-sm font-medium text-slate-700" for="{{ form.date_str.id_for_label }}">{{ form.date_str.label }}</label>
+                {{ form.date_str }}
+                {% if form.date_str.errors %}<p class="mt-1 text-xs font-medium text-red-600">{{ form.date_str.errors.0 }}</p>{% endif %}
+            </div>
+            <div>
+                <label class="mb-1.5 block text-sm font-medium text-slate-700" for="{{ form.time_str.id_for_label }}">{{ form.time_str.label }}</label>
+                {{ form.time_str }}
+                {% if form.time_str.errors %}<p class="mt-1 text-xs font-medium text-red-600">{{ form.time_str.errors.0 }}</p>{% endif %}
+            </div>
+        </div>
+
+        <div>
+            <label class="mb-1.5 block text-sm font-medium text-slate-700" for="{{ form.payment_method.id_for_label }}">{{ form.payment_method.label }}</label>
+            {{ form.payment_method }}
+            {% if form.payment_method.errors %}<p class="mt-1 text-xs font-medium text-red-600">{{ form.payment_method.errors.0 }}</p>{% endif %}
+        </div>
+
+        <button type="submit" class="w-full rounded-xl bg-gradient-to-r from-brand-600 to-brand-700 py-3.5 text-sm font-semibold text-white shadow-lg shadow-brand-500/25 transition hover:from-brand-700 hover:to-brand-800">Отправить заявку</button>
+    </form>
+</article>
+{% endblock %}

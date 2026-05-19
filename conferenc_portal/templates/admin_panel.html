@@ -1,0 +1,135 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Панель администратора — конференция.рф{% endblock %}
+
+{% block content %}
+<header class="mb-8">
+    <h1 class="text-2xl font-bold tracking-tight text-brand-950 sm:text-3xl">Панель управления заявками</h1>
+    <p class="mt-2 text-sm text-slate-600">Фильтрация, сортировка и изменение статусов заявок</p>
+</header>
+
+<form method="get" class="mb-6 rounded-2xl border border-white/80 bg-white/90 p-5 shadow-card backdrop-blur-sm sm:p-6">
+    <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <div>
+            <label class="mb-1.5 block text-sm font-medium text-slate-700">Статус</label>
+            <select name="status" class="w-full rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm shadow-sm focus:border-brand-500 focus:outline-none focus:ring-4 focus:ring-brand-500/15">
+                <option value="">Все</option>
+                {% for val, label in status_choices %}
+                <option value="{{ val }}" {% if status_filter == val %}selected{% endif %}>{{ label }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div>
+            <label class="mb-1.5 block text-sm font-medium text-slate-700">Зал</label>
+            <select name="room" class="w-full rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm shadow-sm focus:border-brand-500 focus:outline-none focus:ring-4 focus:ring-brand-500/15">
+                <option value="">Все залы</option>
+                {% for room in rooms %}
+                <option value="{{ room.pk }}" {% if room_filter == room.pk|stringformat:"s" %}selected{% endif %}>{{ room.name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div>
+            <label class="mb-1.5 block text-sm font-medium text-slate-700">Сортировка</label>
+            <select name="sort" class="w-full rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm shadow-sm focus:border-brand-500 focus:outline-none focus:ring-4 focus:ring-brand-500/15">
+                <option value="-created_at" {% if sort == '-created_at' %}selected{% endif %}>Новые первые</option>
+                <option value="created_at" {% if sort == 'created_at' %}selected{% endif %}>Старые первые</option>
+                <option value="start_datetime" {% if sort == 'start_datetime' %}selected{% endif %}>Дата мероприятия ↑</option>
+                <option value="-start_datetime" {% if sort == '-start_datetime' %}selected{% endif %}>Дата мероприятия ↓</option>
+                <option value="status" {% if sort == 'status' %}selected{% endif %}>По статусу</option>
+            </select>
+        </div>
+        <div>
+            <label class="mb-1.5 block text-sm font-medium text-slate-700">Поиск</label>
+            <input type="text" name="q" value="{{ search }}" placeholder="Логин, имя, зал" class="w-full rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm shadow-sm placeholder:text-slate-400 focus:border-brand-500 focus:outline-none focus:ring-4 focus:ring-brand-500/15">
+        </div>
+    </div>
+    <div class="mt-4 flex flex-wrap gap-2">
+        <button type="submit" class="rounded-xl bg-gradient-to-r from-brand-600 to-brand-700 px-5 py-2.5 text-sm font-semibold text-white shadow-md transition hover:from-brand-700 hover:to-brand-800">Применить</button>
+        <a href="{% url 'admin_panel' %}" class="inline-flex items-center rounded-xl border border-slate-200 bg-white px-5 py-2.5 text-sm font-semibold text-slate-700 transition hover:bg-slate-50">Сбросить</a>
+    </div>
+</form>
+
+{% if page_obj.object_list %}
+<div class="overflow-hidden rounded-2xl border border-white/80 bg-white/90 shadow-card backdrop-blur-sm">
+    <div class="overflow-x-auto">
+        <table class="admin-table w-full min-w-[640px] text-sm">
+            <thead>
+                <tr class="border-b border-slate-200 bg-gradient-to-r from-slate-50 to-brand-50/50">
+                    <th class="px-4 py-3 text-left font-semibold text-slate-600">ID</th>
+                    <th class="px-4 py-3 text-left font-semibold text-slate-600">Пользователь</th>
+                    <th class="px-4 py-3 text-left font-semibold text-slate-600">Зал</th>
+                    <th class="px-4 py-3 text-left font-semibold text-slate-600">Дата</th>
+                    <th class="px-4 py-3 text-left font-semibold text-slate-600">Оплата</th>
+                    <th class="px-4 py-3 text-left font-semibold text-slate-600">Статус</th>
+                    <th class="px-4 py-3 text-left font-semibold text-slate-600">Действие</th>
+                </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-100">
+                {% for booking in page_obj %}
+                <tr class="transition hover:bg-brand-50/30">
+                    <td class="px-4 py-3 font-medium text-brand-800">#{{ booking.pk }}</td>
+                    <td class="px-4 py-3">{{ booking.user.username }}<br><span class="text-slate-500">{{ booking.user.get_full_name }}</span></td>
+                    <td class="px-4 py-3">{{ booking.room.name }}</td>
+                    <td class="px-4 py-3 whitespace-nowrap">{{ booking.start_datetime|date:"d.m.Y H:i" }}</td>
+                    <td class="px-4 py-3">{{ booking.get_payment_method_display }}</td>
+                    <td class="px-4 py-3">{% include 'partials/status_badge.html' with status=booking.status label=booking.get_status_display %}</td>
+                    <td class="px-4 py-3">
+                        <button type="button"
+                                class="rounded-lg border border-brand-200 bg-white px-3 py-1.5 text-xs font-semibold text-brand-700 shadow-sm transition hover:bg-brand-50"
+                                data-admin-modal="{{ booking.pk }}"
+                                data-current="{{ booking.status }}"
+                                data-user="{{ booking.user.username }}"
+                                data-room="{{ booking.room.name }}">
+                            Изменить статус
+                        </button>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+{% if page_obj.has_other_pages %}
+<nav class="mt-6 flex flex-wrap items-center justify-center gap-2">
+    {% if page_obj.has_previous %}
+    <a href="?page={{ page_obj.previous_page_number }}&status={{ status_filter }}&room={{ room_filter }}&sort={{ sort }}&q={{ search }}" class="rounded-lg border border-slate-200 bg-white px-4 py-2 text-sm font-medium text-slate-700 shadow-sm transition hover:bg-slate-50">Назад</a>
+    {% endif %}
+    <span class="rounded-lg bg-brand-50 px-4 py-2 text-sm font-medium text-brand-800">Стр. {{ page_obj.number }} из {{ page_obj.paginator.num_pages }}</span>
+    {% if page_obj.has_next %}
+    <a href="?page={{ page_obj.next_page_number }}&status={{ status_filter }}&room={{ room_filter }}&sort={{ sort }}&q={{ search }}" class="rounded-lg border border-slate-200 bg-white px-4 py-2 text-sm font-medium text-slate-700 shadow-sm transition hover:bg-slate-50">Вперёд</a>
+    {% endif %}
+</nav>
+{% endif %}
+
+{% else %}
+<article class="rounded-2xl border border-dashed border-slate-300 bg-white/60 py-12 text-center text-slate-600">Заявки не найдены.</article>
+{% endif %}
+
+<section id="admin-status-modal" class="modal-overlay hidden" role="dialog">
+    <div class="modal-backdrop" data-close-admin-modal></div>
+    <section class="modal-box rounded-2xl border border-white/20 bg-white p-6 shadow-2xl sm:max-w-md">
+        <h2 class="text-lg font-bold text-brand-900">Изменение статуса</h2>
+        <p id="admin-modal-info" class="mt-2 mb-5 text-sm text-slate-600"></p>
+        <form method="post" id="admin-status-form" class="space-y-4">
+            {% csrf_token %}
+            <input type="hidden" name="booking_id" id="admin-booking-id">
+            <div>
+                <label class="mb-1.5 block text-sm font-medium text-slate-700" for="admin-status-select">Новый статус</label>
+                <select name="status" id="admin-status-select" class="w-full rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm shadow-sm focus:border-brand-500 focus:outline-none focus:ring-4 focus:ring-brand-500/15">
+                    {% for val, label in status_choices %}
+                    <option value="{{ val }}">{{ label }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <button type="submit" class="w-full rounded-xl bg-gradient-to-r from-brand-600 to-brand-700 py-3 text-sm font-semibold text-white shadow-md transition hover:from-brand-700 hover:to-brand-800">Сохранить</button>
+        </form>
+        <button type="button" data-close-admin-modal class="modal-close-btn mt-3 w-full rounded-xl border border-slate-200 bg-slate-50 py-2.5 text-sm font-medium text-slate-600 transition hover:bg-slate-100">Отмена</button>
+    </section>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/admin.js' %}"></script>
+{% endblock %}

@@ -1,0 +1,100 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}конференции.рф{% endblock %}</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#eff6ff',
+                            100: '#dbeafe',
+                            200: '#bfdbfe',
+                            400: '#60a5fa',
+                            500: '#3b82f6',
+                            600: '#2563eb',
+                            700: '#1d4ed8',
+                            800: '#1e40af',
+                            900: '#1e3a8a',
+                            950: '#172554',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['"Segoe UI"', 'system-ui', 'sans-serif'],
+                    },
+                    boxShadow: {
+                        'soft': '0 4px 24px -4px rgba(30, 64, 175, 0.12)',
+                        'card': '0 1px 3px rgba(15,23,42,0.06), 0 8px 24px -8px rgba(30,64,175,0.1)',
+                        'glow': '0 0 40px -8px rgba(59, 130, 246, 0.35)',
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="stylesheet" href="{% static 'css/custom.css' %}">
+    {% block extra_head %}{% endblock %}
+</head>
+<body class="min-h-screen flex flex-col bg-gradient-to-br from-slate-50 via-blue-50/40 to-indigo-50/30 text-slate-800 font-sans antialiased">
+
+    <header class="sticky top-0 z-40 border-b border-white/60 bg-white/75 backdrop-blur-xl shadow-sm">
+        <div class="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-3 px-4 py-3.5 sm:px-6">
+            <a href="{% url 'home' %}" class="group flex flex-col">
+                <span class="text-lg font-bold tracking-tight text-brand-900 transition group-hover:text-brand-600">конференция.рф</span>
+                <span class="text-[10px] font-medium uppercase tracking-widest text-slate-400">бронирование залов</span>
+            </a>
+            <nav class="flex flex-wrap items-center gap-1 text-sm">
+                <a href="{% url 'home' %}" class="rounded-full px-3.5 py-2 font-medium text-slate-600 transition hover:bg-brand-50 hover:text-brand-700">Главная</a>
+                {% if user.is_authenticated %}
+                    <a href="{% url 'halls' %}" class="rounded-full px-3.5 py-2 font-medium text-slate-600 transition hover:bg-brand-50 hover:text-brand-700">Залы</a>
+                    <a href="{% url 'booking_create' %}" class="rounded-full px-3.5 py-2 font-medium text-slate-600 transition hover:bg-brand-50 hover:text-brand-700">Заявка</a>
+                    <a href="{% url 'profile' %}" class="rounded-full px-3.5 py-2 font-medium text-slate-600 transition hover:bg-brand-50 hover:text-brand-700">Кабинет</a>
+                    {% if user.is_staff %}
+                        <a href="{% url 'admin_panel' %}" class="rounded-full bg-brand-600 px-3.5 py-2 font-medium text-white shadow-sm transition hover:bg-brand-700">Админ</a>
+                    {% endif %}
+                    <a href="{% url 'logout' %}" class="rounded-full px-3.5 py-2 font-medium text-slate-500 transition hover:bg-slate-100">Выход</a>
+                {% else %}
+                    <button type="button" data-open-modal="login" class="rounded-full px-3.5 py-2 font-medium text-slate-600 transition hover:bg-brand-50 hover:text-brand-700">Вход</button>
+                    <button type="button" data-open-modal="register" class="rounded-full bg-gradient-to-r from-brand-600 to-brand-700 px-4 py-2 font-semibold text-white shadow-md shadow-brand-500/25 transition hover:from-brand-700 hover:to-brand-800">Регистрация</button>
+                {% endif %}
+            </nav>
+        </div>
+    </header>
+
+    {% if messages %}
+    <div class="mx-auto mt-4 w-full max-w-6xl space-y-2 px-4 sm:px-6">
+        {% for message in messages %}
+        <div class="rounded-xl border px-4 py-3 text-sm shadow-sm
+            {% if message.tags == 'success' %}border-emerald-200/80 bg-emerald-50 text-emerald-800
+            {% elif message.tags == 'error' %}border-red-200/80 bg-red-50 text-red-800
+            {% else %}border-blue-200/80 bg-blue-50 text-blue-800{% endif %}">
+            {{ message }}
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    <main class="mx-auto w-full max-w-6xl flex-1 px-4 py-8 sm:px-6 sm:py-10">
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer class="mt-auto border-t border-slate-200/80 bg-white/60 backdrop-blur-sm">
+        <div class="mx-auto max-w-6xl px-4 py-6 text-center sm:px-6">
+            <p class="text-sm font-medium text-brand-900">конференции.рф</p>
+            <p class="mt-1 text-xs text-slate-500">ИС бронирования помещений для всероссийских конференций &copy; 2026</p>
+        </div>
+    </footer>
+
+    {% if not user.is_authenticated %}
+    {% include 'partials/modal_login.html' %}
+    {% include 'partials/modal_register.html' %}
+    {% endif %}
+
+    <script src="{% static 'js/modals.js' %}"></script>
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

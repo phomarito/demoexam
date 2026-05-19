@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Главная — конференция.рф{% endblock %}
+
+{% block content %}
+{% include 'partials/slider.html' %}
+
+<section>
+
+    <h1>
+        Бронирование залов для всероссийских конференций
+    </h1>
+    <p>
+        Портал конференция.рф — информационная система для подачи заявок на аренду конференц-залов.
+        Зарегистрируйтесь, выберите помещение и укажите удобное время проведения мероприятия.
+    </p>
+    {% if user.is_authenticated %}
+    <div>
+        <a href="{% url 'halls' %}">Смотреть залы и календарь</a>
+        <a href="{% url 'booking_create' %}">Оформить заявку</a>
+    </div>
+    {% else %}
+    <div>
+        <button type="button" data-open-modal="register" >Зарегистрироваться</button>
+        <button type="button" data-open-modal="login">Войти</button>
+    </div>
+    {% endif %}
+</section>
+
+<section>
+    <article>
+        <span>01</span>
+        <h3>Выбор зала</h3>
+        <p>Просматривайте доступные помещения и свободные даты в интерактивном календаре.</p>
+    </article>
+    <article>
+        <span>02</span>
+        <h3>Онлайн-заявка</h3>
+        <p>Укажите дату в формате дд.мм.гггг и способ оплаты: наличные или перевод.</p>
+    </article>
+    <article>
+        <span>03</span>
+        <h3>Личный кабинет</h3>
+        <p>Отслеживайте статус заявок и оставляйте отзывы после завершения мероприятия.</p>
+    </article>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/slider.js' %}"></script>
+{% if show_login %}
+<script>document.addEventListener('DOMContentLoaded', function(){ openModal('login'); });</script>
+{% elif show_register %}
+<script>document.addEventListener('DOMContentLoaded', function(){ openModal('register'); });</script>
+{% endif %}
+{% endblock %}

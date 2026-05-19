@@ -1,0 +1,83 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Залы и календарь — конференция.рф{% endblock %}
+
+{% block content %}
+<header class="mb-8">
+    <h1 class="text-2xl font-bold tracking-tight text-brand-950 sm:text-3xl">Залы и свободные даты</h1>
+    <p class="mt-2 max-w-2xl text-sm text-slate-600">Выберите зал, просмотрите занятые слоты в календаре и оформите заявку на свободное время.</p>
+</header>
+
+<section class="grid grid-cols-1 gap-6 lg:grid-cols-3">
+    <aside class="space-y-3 lg:col-span-1">
+        <h2 class="text-sm font-bold uppercase tracking-wide text-slate-500">Список залов</h2>
+        {% for room in rooms %}
+        <a href="?room={{ room.pk }}"
+           class="block rounded-2xl border bg-white/90 p-4 shadow-card backdrop-blur-sm transition hover:-translate-y-0.5 hover:shadow-soft {% if selected_room and selected_room.pk == room.pk %}border-brand-400 ring-2 ring-brand-500/30{% else %}border-white/80 hover:border-brand-200{% endif %}">
+            <p class="font-semibold text-brand-900">{{ room.name }}</p>
+            <p class="mt-1 text-xs font-medium text-brand-600">Вместимость: {{ room.capacity }} чел.</p>
+            <p class="mt-2 text-sm leading-relaxed text-slate-600">{{ room.description|truncatewords:15 }}</p>
+        </a>
+        {% empty %}
+        <p class="rounded-xl bg-amber-50 p-4 text-sm text-amber-800">Залы пока не добавлены. Запустите: python manage.py seed_data</p>
+        {% endfor %}
+    </aside>
+
+    <section class="lg:col-span-2">
+        {% if selected_room %}
+        <article class="overflow-hidden rounded-2xl border border-white/80 bg-white/90 shadow-card backdrop-blur-sm" id="calendar-app"
+                 data-room-id="{{ selected_room.pk }}"
+                 data-room-name="{{ selected_room.name }}"
+                 data-availability-url="{% url 'hall_availability' selected_room.pk %}">
+            <header class="flex flex-wrap items-center justify-between gap-3 border-b border-slate-100 bg-gradient-to-r from-brand-50/80 to-white px-5 py-4">
+                <h2 class="text-lg font-semibold text-brand-900">{{ selected_room.name }}</h2>
+                <nav class="flex flex-wrap items-center gap-2 text-sm">
+                    <button type="button" id="cal-prev" class="rounded-lg border border-slate-200 bg-white px-3 py-1.5 font-medium text-slate-700 shadow-sm transition hover:bg-slate-50">Пред.</button>
+                    <span id="cal-title" class="min-w-[120px] text-center font-semibold text-slate-700"></span>
+                    <button type="button" id="cal-next" class="rounded-lg border border-slate-200 bg-white px-3 py-1.5 font-medium text-slate-700 shadow-sm transition hover:bg-slate-50">След.</button>
+                </nav>
+            </header>
+
+            <div class="overflow-x-auto p-4">
+                <table class="calendar-table w-full min-w-[280px] overflow-hidden rounded-xl text-sm shadow-inner" id="cal-grid">
+                    <thead>
+                        <tr class="bg-slate-100">
+                            <th class="py-2 font-semibold text-slate-600">Пн</th>
+                            <th class="py-2 font-semibold text-slate-600">Вт</th>
+                            <th class="py-2 font-semibold text-slate-600">Ср</th>
+                            <th class="py-2 font-semibold text-slate-600">Чт</th>
+                            <th class="py-2 font-semibold text-slate-600">Пт</th>
+                            <th class="py-2 font-semibold text-slate-600">Сб</th>
+                            <th class="py-2 font-semibold text-slate-600">Вс</th>
+                        </tr>
+                    </thead>
+                    <tbody id="cal-body" class="bg-white"></tbody>
+                </table>
+            </div>
+
+            <section id="slots-panel" class="hidden border-t border-slate-100 bg-slate-50/50 px-5 py-4">
+                <h3 class="mb-3 font-medium text-brand-900">Свободные слоты на <span id="selected-date-label" class="text-brand-600"></span></h3>
+                <ul id="slots-list" class="mb-4 flex flex-wrap gap-2"></ul>
+                <a id="booking-link" href="#" class="hidden inline-flex rounded-xl bg-gradient-to-r from-brand-600 to-brand-700 px-5 py-2.5 text-sm font-semibold text-white shadow-md transition hover:from-brand-700 hover:to-brand-800">Оставить заявку</a>
+            </section>
+
+            <footer class="flex flex-wrap items-center gap-4 border-t border-slate-100 px-5 py-3 text-xs text-slate-500">
+                <span class="flex items-center gap-1.5"><span class="h-3 w-3 rounded bg-red-200 ring-1 ring-red-300"></span> занято</span>
+                <span class="flex items-center gap-1.5"><span class="h-3 w-3 rounded bg-emerald-100 ring-1 ring-emerald-300"></span> свободно</span>
+            </footer>
+        </article>
+        {% else %}
+        <article class="flex min-h-[280px] items-center justify-center rounded-2xl border border-dashed border-slate-300 bg-white/60 p-8 text-center text-slate-600 shadow-sm">
+            Выберите зал из списка слева, чтобы открыть календарь доступности.
+        </article>
+        {% endif %}
+    </section>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+{% if selected_room %}
+<script src="{% static 'js/calendar.js' %}"></script>
+{% endif %}
+{% endblock %}
